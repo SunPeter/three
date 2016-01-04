@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Basic Three.js App</title>
+    <style>
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+    #statistic{
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="statistic"></div>
+    <script src="vender/three.js"></script>
+    <script src="vender/stats.js"></script>
+    <script src="vender/dat.gui.js"></script>
+    <script>
+    var stats = statistic();
+    var scene = new THREE.Scene();
+    var aspect = window.innerWidth / window.innerHeight;
+
+    var camera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
+    var renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    var geometry = new THREE.BoxGeometry(1, 1, 1);
+    var material = new THREE.MeshNormalMaterial();
+    var cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
+    camera.position.z = 5;
+
+    (function render() {
+        stats.update();
+        requestAnimationFrame(render);
+        cube.rotation.x += 0.1;
+        cube.rotation.y += 0.1;
+        renderer.render(scene, camera);
+    })();
+
+
+    function statistic(){
+        var stats = new Stats();
+        stats.setMode(0);
+        document.querySelector("#statistic").appendChild(stats.domElement);
+        return stats;
+    }
+
+    (function GUI(){
+        var gui = new dat.GUI();
+        controls = {
+            x: 0,
+            y: 0
+        }
+        gui.add(controls, 'x', 0, 100);
+        gui.add(controls, "y", 0, 10);
+    })();
+    </script>
+</body>
+
+</html>
